@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/CSS")
+    @Scripts.Render("~/Scripts/Angular")
+</head>
+<body>
+    <div class="container">
+        @if (TempData["Error"] != null)
+        {
+            <div style="border:1px solid red;background:#ffc1c1">@TempData["Error"]</div>
+        }
+        @RenderBody()
+    </div>
+    @RenderSection("Scripts", false)
+</body>
+</html>

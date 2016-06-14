@@ -1,0 +1,48 @@
+﻿<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="~/Content/Themes/Default/Styles/style1.css" rel="stylesheet" type="text/css">
+
+</head>
+@{
+    ViewBag.Title = "Сокращатель ссылок";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div ng-app="Shortener" ng-controller="ShortenerController" class="t-center mid-container foot-room">
+    @*    @Html.ActionLink("Мои Ссылки", "Index", "MyLinks").*@
+    <form ng-submit="processForm()">
+        <fieldset class="cf">
+            <input type="url" required placeholder="Длинный URL для сокращения" name="url" ng-model="url" taborder="1" class="shorten-input" value="" autocomplete="off" autocorrect="off" autocapitalize="off">
+            <input type="submit" value="Сократить" name="shorten" class="button button-primary button-large shorten-button">
+        </fieldset>
+        <div><a href="/{{shortLink}}"> {{textlink}}{{shortLink}}</a>
+        </div>
+
+
+    </form>
+
+
+</div>
+<button class="great_btn"><a href="/MyLinks" class="great_btn_a">Мои ссылки</a></button>
+@section Scripts{
+    <script>
+        var shortener = angular.module("Shortener", []);
+        shortener.controller("ShortenerController", function ($scope, $http) {
+            $scope.processForm = function () {
+                var params = { Url: $scope.url };
+                $http({
+                    method: "POST",
+                    url: "/Home/Shorten",
+                    data: params
+                }).success(function (json) {
+                    if (json.Success) {
+                        $scope.shortLink = json.ShortLink; 
+                        $scope.textlink = json.textlink;
+                    }
+                });
+            };
+        });
+    </script>
+}

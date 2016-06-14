@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "Мои ссылки";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div ng-app="myLinks" ng-controller="myLinksController">
+    <table class="LinksTable" border="2">
+        <tr>
+            <th>Короткая ссылка</th>
+            <th>Базовая ссылка</th>
+            <th>Дата создания</th>
+            <th>Кол-во просмотров</th>
+        </tr>
+        <tr ng-repeat="link in links">
+            <td><a href="{{ link.Short }}">{{ link.Short }}</a></td>
+            <td><a href="{{ link.Original }}">{{ link.Original }}</a></td>
+            <td>{{ link.CreatedDate }}</td>
+            <td>{{ link.Visitors }}</td>
+        </tr>
+    </table>
+</div>
+
+@section Scripts{
+    <script>
+        var shortener = angular.module("myLinks", []);
+        shortener.controller("myLinksController", function ($scope, $http) {
+            $http.get("/MyLinks/Get")
+                .then(function (response) {
+                    if (response.data.Links.length > 0) {
+                        $scope.links = response.data.Links
+                    }
+                });
+        });
+    </script>
+}
